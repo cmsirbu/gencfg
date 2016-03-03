@@ -56,9 +56,9 @@ def generate_config(config_template, config_data):
                              .format(config_template, config_data))
             else:
                 data_set = {key_row[i]: row[i] for i in range(0, len(row))}
-                # print(data_set)
                 j2_rendered_template = j2_template.render(data_set)
                 out_filename = os.path.join(out_directory, "cfg-" + str(csv_reader.line_num-1))
+
                 with open(out_filename, mode="w") as out_file:
                     out_file.write(j2_rendered_template)
 
@@ -73,8 +73,6 @@ def main(arguments):
     parser.add_argument('-o', '--outdir', help="output directory", default="config")
 
     args = parser.parse_args(arguments)
-
-    # print(args.outdir)
 
     if args.operation == "gencfg":
         if args.template and args.data:
@@ -92,5 +90,3 @@ def main(arguments):
 
 if __name__ == '__main__':
     sys.exit(main(sys.argv[1:]))
-
-# TODO output dir for generated config (cleanup first?)
