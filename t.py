@@ -41,6 +41,11 @@ def generate_config(config_template, config_data):
     with open(config_data, newline='') as csv_file:
         csv_reader = csv.reader(csv_file)
 
+        # create config output dir
+        out_directory = os.path.join(os.path.dirname(config_template), "output")
+        if not os.path.exists(out_directory):
+            os.makedirs(out_directory)
+
         for row in csv_reader:
             if csv_reader.line_num == 1:
                 # these are the variables for the template
@@ -53,7 +58,9 @@ def generate_config(config_template, config_data):
                 data_set = {key_row[i]: row[i] for i in range(0, len(row))}
                 # print(data_set)
                 j2_rendered_template = j2_template.render(data_set)
-                # print(j2_rendered_template)
+                out_filename = os.path.join(out_directory, "cfg-" + str(csv_reader.line_num-1))
+                with open(out_filename, mode="w") as out_file:
+                    out_file.write(j2_rendered_template)
 
 
 def main(arguments):
