@@ -29,7 +29,7 @@ def generate_csv_header(config_template):
         print("Header variables saved to " + pre + ".csv")
 
 
-def generate_config(config_template, config_data):
+def generate_config(config_template, config_data, config_outdir):
 
     # init jinja2 environment
     j2_env = jinja2.Environment(loader=jinja2.FileSystemLoader(searchpath='.'))
@@ -40,7 +40,7 @@ def generate_config(config_template, config_data):
         csv_reader = csv.reader(csv_file)
 
         # create config output dir
-        out_directory = os.path.join(os.path.dirname(config_template), "output")
+        out_directory = os.path.join(os.path.dirname(config_template), config_outdir)
         if not os.path.exists(out_directory):
             os.makedirs(out_directory)
 
@@ -68,20 +68,20 @@ def main(arguments):
     parser.add_argument('operation', help="gencfg, csvheader")
     parser.add_argument('-t', '--template', help="config template file (jinja2)")
     parser.add_argument('-d', '--data', help="config data file (csv)")
-    parser.add_argument('-o', '--outdir', help="output directory", default="config")
+    parser.add_argument('-o', '--outdir', help="output directory (default=config)", default="config")
 
     args = parser.parse_args(arguments)
 
     if args.operation == "gencfg":
         if args.template and args.data:
-            generate_config(args.template, args.data)
+            generate_config(args.template, args.data, args.outdir)
         else:
-            sys.exit("Template and data files must be specified.")
+            sys.exit("Template (-t) and data (-d) files must be specified.")
     elif args.operation == "csvheader":
         if args.template:
             generate_csv_header(args.template)
         else:
-            sys.exit("Template file must be specified.")
+            sys.exit("Template (-t) file must be specified.")
     else:
         sys.exit("Invalid operation. Use gencfg to apply data to a template or " +
                  "csvheader to extract variables from a template.")
