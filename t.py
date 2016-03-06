@@ -26,8 +26,6 @@ def generate_csv_header(config_template):
     with open(pre + ".csv", "w", newline='') as csv_file:
         csv_writer = csv.writer(csv_file)
         csv_writer.writerow(template_vars)
-
-        print(template_vars)
         print("Header variables saved to " + pre + ".csv")
 
 
