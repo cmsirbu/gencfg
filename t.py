@@ -21,7 +21,7 @@ def get_template_var_list(config_template):
 
 def generate_csv_header(config_template):
     template_vars = sorted(list(get_template_var_list(config_template)))
-    pre, ext = os.path.splitext(config_template)
+    pre, _ = os.path.splitext(config_template)
 
     with open(pre + ".csv", "w", newline='') as csv_file:
         csv_writer = csv.writer(csv_file)
@@ -49,7 +49,7 @@ def generate_config(config_template, config_data, config_outdir):
                 # these are the variables for the template
                 key_row = row
                 # check if they match with the actual list in the template
-                if all(x in key_row for x in get_template_var_list(config_template)) is False:
+                if not all(x in key_row for x in get_template_var_list(config_template)):
                     sys.exit('Not all variables in {} are found in {}'
                              .format(config_template, config_data))
             else:
