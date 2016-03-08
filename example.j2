@@ -1,0 +1,20 @@
+!
+hostname {{ROUTER_HOSTNAME}}
+!
+!
+no ip domain lookup
+no ip http server
+no ip http secure-server
+ip ssh source-interface Loopback0
+ip ssh version 2
+!
+!
+ip vrf {{VRF_NAME}}
+ description {{CUSTOMER_NAME}} {{VRF_NAME}}
+!
+!
+interface Loopback0
+ description Management interface
+ ip vrf forwarding {{VRF_NAME}}
+ ip address {{PRIMARY_MGMT_LOOPBACK}} 255.255.255.255
+!
