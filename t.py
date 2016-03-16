@@ -37,7 +37,13 @@ def generate_config(config_template, config_data, config_outdir):
 
     # read csv data
     with open(config_data, newline='') as csv_file:
-        csv_reader = csv.reader(csv_file)
+        # initialize reader object and protect against non-uniform csv files
+        # missing values will be empty strings
+        csv_reader = csv.DictReader(csv_file, restval="WARNING_VALUE_MISSING")
+
+        # check if all the template vars are found in the csv
+        if not all(x in csv_reader.fieldnames for x in get_template_var_list(config_template)):
+            sys.exit('Not all variables in {} are found in {}'.format(config_template, config_data))
 
         # create config output dir
         out_directory = os.path.join(os.path.dirname(config_template), config_outdir)
@@ -45,20 +51,12 @@ def generate_config(config_template, config_data, config_outdir):
             os.makedirs(out_directory)
 
         for row in csv_reader:
-            if csv_reader.line_num == 1:
-                # these are the variables for the template
-                key_row = row
-                # check if they match with the actual list in the template
-                if not all(x in key_row for x in get_template_var_list(config_template)):
-                    sys.exit('Not all variables in {} are found in {}'
-                             .format(config_template, config_data))
-            else:
-                data_set = {key_row[i]: row[i] for i in range(0, len(row))}
-                j2_rendered_template = j2_template.render(data_set)
-                out_filename = os.path.join(out_directory, "cfg-" + str(csv_reader.line_num-1))
+            # render template for each row from the csv file and write it to disk
+            j2_rendered_template = j2_template.render(row)
+            out_filename = os.path.join(out_directory, "cfg-" + str(csv_reader.line_num-1))
 
-                with open(out_filename, mode="w") as out_file:
-                    out_file.write(j2_rendered_template)
+            with open(out_filename, mode="w") as out_file:
+                out_file.write(j2_rendered_template)
 
 
 def main(arguments):
