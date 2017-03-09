@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
 
 """A script that helps generate router configuration from templates.
 """
@@ -23,7 +23,7 @@ def generate_csv_header(config_template):
     template_vars = sorted(list(get_template_var_list(config_template)))
     pre, _ = os.path.splitext(config_template)
 
-    with open(pre + ".csv", "w", newline='') as csv_file:
+    with open(pre + ".csv", "w") as csv_file:
         csv_writer = csv.writer(csv_file)
         csv_writer.writerow(template_vars)
         print("Header variables saved to " + pre + ".csv")
@@ -36,7 +36,7 @@ def generate_config(config_template, config_data, config_outdir):
     j2_template = j2_env.get_template(config_template)
 
     # read csv data
-    with open(config_data, newline='') as csv_file:
+    with open(config_data) as csv_file:
         # initialize reader object and protect against non-uniform csv files
         # missing values will be empty strings
         csv_reader = csv.DictReader(csv_file, restval="WARNING_VALUE_MISSING")
