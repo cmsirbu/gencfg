@@ -4,7 +4,7 @@ A Python (works in both 2 and 3) script that applies csv data to configuration t
 
 ## Requirements
 
-- [Python](https://www.python.org/) **3.x**
+- [Python](https://www.python.org/)
 - [Jinja2](http://jinja.pocoo.org/)
 
 To install dependencies, run `pip install -r requirements.txt` after cloning the repo (or `pip3` if running under python3).
