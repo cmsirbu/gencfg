@@ -1,13 +1,13 @@
 # gencfg
 
-A Python3 script that applies csv data to configuration templates (in jinja2 format).
+A Python (works in both 2 and 3) script that applies csv data to configuration templates (in jinja2 format).
 
 ## Requirements
 
 - [Python](https://www.python.org/) **3.x**
 - [Jinja2](http://jinja.pocoo.org/)
 
-To install dependencies, run `pip3 install -r requirements.txt` after cloning the repo.
+To install dependencies, run `pip install -r requirements.txt` after cloning the repo (or `pip3` if running under python3).
 
 ## Usage
 
