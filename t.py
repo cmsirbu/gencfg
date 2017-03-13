@@ -36,6 +36,7 @@ def generate_config(config_template, config_data, config_outdir):
     j2_template = j2_env.get_template(config_template)
 
     # read csv data
+    totalrows = 0
     with open(config_data) as csv_file:
         # initialize reader object and protect against non-uniform csv files
         # missing values will be empty strings
@@ -57,7 +58,9 @@ def generate_config(config_template, config_data, config_outdir):
 
             with open(out_filename, mode="w") as out_file:
                 out_file.write(j2_rendered_template)
+                totalrows += 1
 
+    print("Generated {} files in {}/".format(totalrows, out_directory))
 
 def main(arguments):
 
@@ -66,7 +69,7 @@ def main(arguments):
     parser.add_argument('operation', help="gencfg, csvheader")
     parser.add_argument('-t', '--template', help="config template file (jinja2)")
     parser.add_argument('-d', '--data', help="config data file (csv)")
-    parser.add_argument('-o', '--outdir', help="output directory (default=config)", default="config")
+    parser.add_argument('-o', '--outdir', help="output directory (default=configs)", default="configs")
 
     args = parser.parse_args(arguments)
 
